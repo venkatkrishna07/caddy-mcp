@@ -21,7 +21,7 @@ import (
 	"github.com/quic-go/quic-go"
 	"go.uber.org/zap"
 
-	"github.com/venkatkrishnas/caddy-mcp/proto"
+	"github.com/venkatkrishna07/caddy-mcp/proto"
 )
 
 func init() {

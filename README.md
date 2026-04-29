@@ -74,7 +74,7 @@ Two listeners in one process. `:443` takes public HTTPS. `:4443` accepts rift cl
 **1. Build Caddy with the plugin**
 
 ```bash
-xcaddy build v2.11.2 --with github.com/venkatkrishnas/caddy-mcp=/path/to/caddy-mcp
+xcaddy build v2.11.2 --with github.com/venkatkrishna07/caddy-mcp=/path/to/caddy-mcp
 ```
 
 Or build directly (no remote dependency):

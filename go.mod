@@ -1,4 +1,4 @@
-module github.com/venkatkrishnas/caddy-mcp
+module github.com/venkatkrishna07/caddy-mcp
 
 go 1.25.1
 
