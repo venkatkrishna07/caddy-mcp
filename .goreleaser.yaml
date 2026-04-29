@@ -16,7 +16,6 @@ builds:
     goos:
       - linux
       - darwin
-      - windows
     goarch:
       - amd64
       - arm64
@@ -48,7 +47,7 @@ changelog:
 
 release:
   github:
-    owner: venkatkrishnas
+    owner: venkatkrishna07
     name: caddy-mcp
   draft: false
   prerelease: auto
