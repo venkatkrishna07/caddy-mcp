@@ -2,7 +2,7 @@ FROM caddy:2-builder AS builder
 
 COPY . /src/caddy-mcp
 RUN xcaddy build \
-    --with github.com/venkatkrishnas/caddy-mcp=/src/caddy-mcp
+    --with github.com/venkatkrishna07/caddy-mcp=/src/caddy-mcp
 
 FROM caddy:2
 

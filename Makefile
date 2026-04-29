@@ -1,7 +1,7 @@
 .PHONY: build build-xcaddy test-server test vet tidy lint clean docker
 
 BINARY  := caddy-mcp
-MODULE  := github.com/venkatkrishnas/caddy-mcp
+MODULE  := github.com/venkatkrishna07/caddy-mcp
 
 build:
 	go build -o caddy ./cmd/caddy-mcp/
