@@ -1,0 +1,24 @@
+{
+	mcp {
+		listen :4443
+		token_file /etc/caddy/mcp-tokens.json
+		discovery
+		discovery_path /.well-known/mcp-servers
+	}
+}
+
+mcp.example.com {
+	mcp_discovery
+
+	reverse_proxy /code-server/* {
+		transport mcp {
+			tunnel code-server
+		}
+	}
+
+	reverse_proxy /db-tools/* {
+		transport mcp {
+			tunnel db-tools
+		}
+	}
+}

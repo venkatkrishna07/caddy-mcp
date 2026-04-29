@@ -1,0 +1,32 @@
+{
+	mcp {
+		listen :4443
+		tls_cert /etc/caddy/mcp-cert.pem
+		tls_key /etc/caddy/mcp-key.pem
+		token_file /etc/caddy/mcp-tokens.json
+	}
+}
+
+code-tools.example.com {
+	# Strip spoofed auth header from external clients
+	request_header -X-Auth-User
+
+	basicauth {
+		alice $2a$14$Zkx19XLiW6VYouLRR3bkzu
+	}
+
+	reverse_proxy mcp-tunnel {
+		# Set from Caddy's authenticated identity — cannot be spoofed
+		header_up X-Auth-User {http.auth.user.id}
+
+		transport mcp {
+			tunnel code-server
+			mode aware
+			policy /etc/caddy/mcp-policies.json
+			allow_tools read_file list_files search
+			deny_tools execute_command shell_exec
+			allow_resources "file:///repo/*"
+			deny_resources "file:///etc/*"
+		}
+	}
+}

@@ -1,0 +1,27 @@
+{
+	mcp {
+		listen :4433
+		dev
+		discovery
+	}
+}
+
+:8080 {
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE"
+		Access-Control-Allow-Headers "Content-Type, Mcp-Session-Id, Mcp-Protocol-Version, Authorization"
+		Access-Control-Expose-Headers "Mcp-Session-Id"
+	}
+
+	@options method OPTIONS
+	handle @options {
+		respond 204
+	}
+
+	reverse_proxy mcp-tunnel {
+		transport mcp {
+			tunnel code-server
+		}
+	}
+}

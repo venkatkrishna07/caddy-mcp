@@ -1,0 +1,14 @@
+{
+	mcp {
+		listen :4443
+		token_file /etc/caddy/mcp-tokens.json
+	}
+}
+
+code-tools.example.com {
+	reverse_proxy mcp-tunnel {
+		transport mcp {
+			tunnel code-server
+		}
+	}
+}
