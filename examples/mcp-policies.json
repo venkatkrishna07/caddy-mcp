@@ -1,0 +1,25 @@
+{
+    "policies": [
+        {
+            "users": ["alice"],
+            "allow_tools": ["echo", "add", "current_time"],
+            "deny_tools": ["slow_task"],
+            "allow_resources": ["file:///readme.md"],
+            "deny_resources": ["file:///notes/*"]
+        },
+        {
+            "users": ["bob"],
+            "allow_tools": ["echo"],
+            "deny_tools": ["add", "current_time", "slow_task", "list_resources"],
+            "allow_resources": [],
+            "deny_resources": ["*"]
+        },
+        {
+            "users": ["admin-*"],
+            "allow_tools": ["*"],
+            "deny_tools": [],
+            "allow_resources": ["*"],
+            "deny_resources": []
+        }
+    ]
+}

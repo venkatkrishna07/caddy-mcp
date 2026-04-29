@@ -1,0 +1,30 @@
+{
+	mcp {
+		listen :4443
+		tls_cert /etc/caddy/mcp-cert.pem
+		tls_key /etc/caddy/mcp-key.pem
+		token_file /etc/caddy/mcp-tokens.json
+		default_token_ttl 24h
+		max_conns_per_ip 5
+		max_total_conns 1000
+		stream_timeout 30m
+		drain_timeout 30s
+		sse_keepalive 30s
+		discovery
+	}
+
+	log mcp_audit {
+		include mcp.audit
+		output file /var/log/caddy/mcp-audit.json
+	}
+}
+
+code-tools.example.com {
+	reverse_proxy mcp-tunnel {
+		transport mcp {
+			tunnel code-server
+			mode aware
+			deny_tools execute_command shell_exec
+		}
+	}
+}

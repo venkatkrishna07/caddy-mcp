@@ -1,0 +1,70 @@
+# DEV/TESTING ONLY — X-Auth-User header is accepted directly from clients.
+# In production, ALWAYS:
+#   1. Strip incoming X-Auth-User with: request_header -X-Auth-User
+#   2. Use Caddy auth middleware (basicauth, JWT, mTLS)
+#   3. Set from authenticated identity: header_up X-Auth-User {http.auth.user.id}
+#
+# Production example:
+#
+#   code-tools.example.com {
+#       request_header -X-Auth-User
+#       basicauth {
+#           alice $2a$14$...
+#       }
+#       reverse_proxy mcp-tunnel {
+#           header_up X-Auth-User {http.auth.user.id}
+#           transport mcp {
+#               tunnel code-server
+#               mode aware
+#               policy /etc/caddy/mcp-policies.json
+#           }
+#       }
+#   }
+
+{
+	mcp {
+		listen :4433
+		dev
+		discovery
+	}
+
+	log mcp_audit {
+		include mcp.audit
+		output file /tmp/mcp-audit.json
+	}
+}
+
+:8080 {
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE"
+		Access-Control-Allow-Headers "Content-Type, Mcp-Session-Id, Mcp-Protocol-Version, Authorization, X-Auth-User"
+		Access-Control-Expose-Headers "Mcp-Session-Id"
+	}
+
+	@options method OPTIONS
+	handle @options {
+		respond 204
+	}
+
+	# DEV: X-Auth-User passed directly for testing per-user ACLs.
+	# Test with: curl -H "X-Auth-User: alice" ...
+
+	reverse_proxy mcp-tunnel {
+		transport mcp {
+			tunnel code-server
+			mode aware
+
+			# Tunnel-level ACLs (apply to ALL users)
+			allow_tools echo add current_time slow_task list_resources
+			deny_tools nonexistent_dangerous_tool
+
+			# Resource ACLs
+			allow_resources "file:///readme.md" "file:///config.json"
+			deny_resources "file:///notes/*"
+
+			# Per-user policy file (evaluated against X-Auth-User header)
+			policy examples/mcp-policies.json
+		}
+	}
+}

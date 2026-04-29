@@ -1,0 +1,36 @@
+# Binaries
+/caddy
+/caddy-mcp
+/test-mcp-server
+*.exe
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Secrets & certs
+*.pem
+*.key
+mcp-tokens.json
+*.db
+
+# Temp
+/tmp/
+*.tmp
+
+# Env
+.env
+
+# Claude Code
+.claude/
+
+# Internal docs
+docs/superpowers/
+.claude-worktrees/
